@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Check-in Elios</title>
+<style>
+body {font-family:Arial;text-align:center;padding-top:50px;}
+input,button {padding:12px;margin:8px;width:250px;}
+</style>
+</head>
+<body>
+<h2>✈️ Check-in Elios</h2>
+<input id="nome" placeholder="Nome"><br>
+<input id="cognome" placeholder="Cognome"><br>
+<input id="from" placeholder="Partenza"><br>
+<input id="to" placeholder="Arrivo"><br>
+<input id="date" type="date"><br>
+<button onclick="go()">Continua</button>
+<script>
+function go(){
+localStorage.setItem("nome",nome.value);
+localStorage.setItem("cognome",cognome.value);
+localStorage.setItem("from",from.value);
+localStorage.setItem("to",to.value);
+localStorage.setItem("date",date.value);
+window.location.href="ticket.html";
+}
+</script>
+</body>
+</html>
