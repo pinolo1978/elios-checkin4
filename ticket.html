@@ -3,53 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <title>Elios Boarding Pass</title>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <style>
-body {font-family:Arial;background:#0b1220;color:white;text-align:center;}
-.ticket {margin:50px auto;width:820px;background:white;color:black;border-radius:25px;overflow:hidden;display:flex;box-shadow:0 20px 50px rgba(0,0,0,0.5);}
-.left {width:70%;padding:30px;}
-.right {width:30%;background:#f1f5f9;padding:25px;border-left:2px dashed #ccc;}
-.header {display:flex;justify-content:space-between;align-items:center;}
-.brand {display:flex;align-items:center;gap:15px;}
-.logo {width:60px;}
-.route {font-size:50px;font-weight:bold;margin:20px 0;}
-.grid {display:grid;grid-template-columns:repeat(3,1fr);gap:15px;}
-.label {font-size:11px;color:gray;}
-.value {font-weight:bold;}
-.footer {margin-top:20px;border-top:2px dashed #ccc;padding-top:10px;font-size:12px;}
+body {
+    font-family: Arial;
+    background: #0b1220;
+    color: white;
+    text-align: center;
+}
+
+.ticket {
+    margin: 50px auto;
+    width: 820px;
+    background: white;
+    color: black;
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.left {
+    width: 70%;
+    padding: 30px;
+}
+
+.right {
+    width: 30%;
+    background: #f1f5f9;
+    padding: 25px;
+    border-left: 2px dashed #ccc;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 65px;
+}
+
+.route {
+    font-size: 50px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.label {
+    font-size: 11px;
+    color: gray;
+}
+
+.value {
+    font-weight: bold;
+}
+
+.footer {
+    margin-top: 20px;
+    border-top: 2px dashed #ccc;
+    padding-top: 10px;
+    font-size: 12px;
+}
 </style>
 </head>
+
 <body>
 
 <div class="ticket">
+
 <div class="left">
 
 <div class="header">
+
 <div class="brand">
-<img class="logo" src="https://i.imgur.com/3ZQ3ZQK.png">
+<!-- 🔥 LOGO LOCALE -->
+<img class="logo" src="logo.png">
+
 <div>
-<div style="font-size:14px;letter-spacing:2px;font-weight:600;">ELIOS AIRLINES</div>
-<div style="font-size:11px;color:gray;">Boarding Pass</div>
+<div style="font-size:14px;letter-spacing:2px;font-weight:600;">
+ELIOS AIRLINES
+</div>
+<div style="font-size:11px;color:gray;">
+Boarding Pass
 </div>
 </div>
+
+</div>
+
 <div id="pnr"></div>
+
 </div>
 
 <div id="name"></div>
+
 <div class="route" id="route"></div>
 
 <div class="grid">
+
 <div><div class="label">DATE</div><div class="value" id="date_out"></div></div>
 <div><div class="label">FLIGHT</div><div class="value">EL<span id="flight"></span></div></div>
 <div><div class="label">CLASS</div><div class="value">ECONOMY</div></div>
+
 <div><div class="label">GATE</div><div class="value" id="gate"></div></div>
 <div><div class="label">TERMINAL</div><div class="value" id="terminal"></div></div>
 <div><div class="label">BOARDING</div><div class="value" id="boarding"></div></div>
+
 <div><div class="label">SEAT</div><div class="value" id="seat"></div></div>
 <div><div class="label">GROUP</div><div class="value">B</div></div>
+
 </div>
 
-<div class="footer">Elios Airlines Electronic Boarding Pass</div>
+<div class="footer">
+Elios Airlines Electronic Boarding Pass
+</div>
 
 </div>
 
@@ -64,24 +146,34 @@ function rand(min,max){return Math.floor(Math.random()*(max-min)+min);}
 function pnr(){return Math.random().toString(36).substring(2,8).toUpperCase();}
 function seat(){let l=["A","B","C","D","E","F"];return rand(1,30)+l[rand(0,6)];}
 
-let n=localStorage.getItem("nome")||"Mario";
-let c=localStorage.getItem("cognome")||"Rossi";
-let f=localStorage.getItem("from")||"Roma";
-let t=localStorage.getItem("to")||"Parigi";
-let d=localStorage.getItem("date")||"2026-03-18";
+// DATI
+let n = localStorage.getItem("nome") || "Mario";
+let c = localStorage.getItem("cognome") || "Rossi";
+let f = localStorage.getItem("from") || "Roma";
+let t = localStorage.getItem("to") || "Parigi";
+let d = localStorage.getItem("date") || "2026-03-18";
 
-name.innerText=(c+"/"+n).toUpperCase();
-route.innerText=f.substring(0,3).toUpperCase()+" → "+t.substring(0,3).toUpperCase();
-date_out.innerText=d;
+// OUTPUT
+document.getElementById("name").innerText = (c+"/"+n).toUpperCase();
+document.getElementById("route").innerText =
+f.substring(0,3).toUpperCase()+" → "+t.substring(0,3).toUpperCase();
 
-pnr.innerText="PNR: "+pnr();
-gate.innerText="A"+rand(1,30);
-terminal.innerText=rand(1,3);
-seat.innerText=seat();
-flight.innerText=rand(100,999);
-boarding.innerText=rand(10,23)+":"+String(rand(0,59)).padStart(2,"0");
+document.getElementById("date_out").innerText = d;
+document.getElementById("pnr").innerText = "PNR: "+pnr();
 
-new QRCode(document.getElementById("qr"),{text:n+" "+c,width:150,height:150});
+document.getElementById("gate").innerText = "A"+rand(1,30);
+document.getElementById("terminal").innerText = rand(1,3);
+document.getElementById("seat").innerText = seat();
+document.getElementById("flight").innerText = rand(100,999);
+document.getElementById("boarding").innerText =
+rand(10,23)+":"+String(rand(0,59)).padStart(2,"0");
+
+// QR
+new QRCode(document.getElementById("qr"),{
+    text:n+" "+c,
+    width:150,
+    height:150
+});
 </script>
 
 </body>
