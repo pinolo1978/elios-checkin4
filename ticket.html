@@ -9,29 +9,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
-body {font-family:Arial;background:#0b1220;color:white;text-align:center;}
-<div style="
-position: fixed;
-bottom: 30px;
-right: 30px;
-z-index: 9999;
-">
-    <button onclick="downloadPDF()" 
-    style="
-    padding:14px 26px;
-    border:none;
-    border-radius:12px;
-    background:linear-gradient(135deg,#1c3f8c,#2563eb);
-    color:white;
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-    box-shadow:0 10px 25px rgba(0,0,0,0.4);
-    transition:0.2s;
-    ">
-        📄 Scarica Boarding Pass
-    </button>
-</div>
+body {
+    font-family: Arial;
+    background: #0b1220;
+    color: white;
+    text-align: center;
+}
+
 .ticket {
     margin: 50px auto;
     width: 900px;
@@ -43,27 +27,62 @@ z-index: 9999;
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 
-.left {width:70%;padding:30px;}
-.right {width:30%;background:#f1f5f9;padding:25px;border-left:2px dashed #ccc;}
+.left {
+    width: 70%;
+    padding: 30px;
+}
 
-.header {display:flex;justify-content:space-between;align-items:center;}
-.brand {display:flex;align-items:center;gap:15px;}
-.logo {width:65px;}
+.right {
+    width: 30%;
+    background: white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-left: 2px dashed #ccc;
+}
 
-.route {font-size:50px;font-weight:bold;margin:20px 0;}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-.grid {display:grid;grid-template-columns:repeat(3,1fr);gap:15px;}
-.label {font-size:11px;color:gray;}
-.value {font-weight:bold;}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-.footer {margin-top:20px;border-top:2px dashed #ccc;padding-top:10px;font-size:12px;}
+.logo {
+    width: 65px;
+}
 
-button {
-    margin-top:20px;
-    padding:12px 25px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
+.route {
+    font-size: 50px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.label {
+    font-size: 11px;
+    color: gray;
+}
+
+.value {
+    font-weight: bold;
+}
+
+.footer {
+    margin-top: 20px;
+    border-top: 2px dashed #ccc;
+    padding-top: 10px;
+    font-size: 12px;
 }
 </style>
 </head>
@@ -78,67 +97,91 @@ button {
 <div class="brand">
 <img class="logo" src="logo.png">
 <div>
-<div style="font-size:14px;letter-spacing:2px;font-weight:600;">ELIOS AIRLINES</div>
-<div style="font-size:11px;color:gray;">Boarding Pass</div>
+<div style="font-size:14px;letter-spacing:2px;font-weight:600;">
+ELIOS AIRLINES
+</div>
+<div style="font-size:11px;color:gray;">
+Boarding Pass
 </div>
 </div>
+</div>
+
 <div id="pnr"></div>
 </div>
 
 <div id="name"></div>
+
 <div class="route" id="route"></div>
 
 <div class="grid">
+
 <div><div class="label">DATE</div><div class="value" id="date_out"></div></div>
 <div><div class="label">FLIGHT</div><div class="value">EL<span id="flight"></span></div></div>
 <div><div class="label">CLASS</div><div class="value">ECONOMY</div></div>
+
 <div><div class="label">GATE</div><div class="value" id="gate"></div></div>
 <div><div class="label">TERMINAL</div><div class="value" id="terminal"></div></div>
 <div><div class="label">BOARDING</div><div class="value" id="boarding"></div></div>
+
 <div><div class="label">SEAT</div><div class="value" id="seat"></div></div>
 <div><div class="label">GROUP</div><div class="value">B</div></div>
-</div>
-
-<div class="footer">Elios Airlines Boarding Pass</div>
 
 </div>
 
-<div class="right" style="
-display:flex;
-align-items:center;
-justify-content:center;
-background:white;
+<div class="footer">
+Elios Airlines Boarding Pass
+
+<br><br>
+
+<button onclick="downloadPDF()" 
+style="
+padding:10px 20px;
+border:none;
+border-radius:8px;
+background:#1c3f8c;
+color:white;
+cursor:pointer;
 ">
-    <div id="qr"></div>
-</div>
+📄 Scarica PDF
+</button>
 
 </div>
 
-<button onclick="downloadPDF()">📄 Scarica PDF</button>
+</div>
+
+<div class="right">
+<div id="qr"></div>
+</div>
+
+</div>
 
 <script>
 function rand(min,max){return Math.floor(Math.random()*(max-min)+min);}
 function pnr(){return Math.random().toString(36).substring(2,8).toUpperCase();}
 function seat(){let l=["A","B","C","D","E","F"];return rand(1,30)+l[rand(0,6)];}
 
-let n=localStorage.getItem("nome")||"Mario";
-let c=localStorage.getItem("cognome")||"Rossi";
-let f=localStorage.getItem("from")||"Roma";
-let t=localStorage.getItem("to")||"Parigi";
-let d=localStorage.getItem("date")||"2026-03-18";
+let n = localStorage.getItem("nome") || "Mario";
+let c = localStorage.getItem("cognome") || "Rossi";
+let f = localStorage.getItem("from") || "Roma";
+let t = localStorage.getItem("to") || "Parigi";
+let d = localStorage.getItem("date") || "2026-03-18";
 
-name.innerText=(c+"/"+n).toUpperCase();
-route.innerText=f.substring(0,3).toUpperCase()+" → "+t.substring(0,3).toUpperCase();
-date_out.innerText=d;
+name.innerText = (c+"/"+n).toUpperCase();
+route.innerText = f.substring(0,3).toUpperCase()+" → "+t.substring(0,3).toUpperCase();
+date_out.innerText = d;
 
-pnr.innerText="PNR: "+pnr();
-gate.innerText="A"+rand(1,30);
-terminal.innerText=rand(1,3);
-seat.innerText=seat();
-flight.innerText=rand(100,999);
-boarding.innerText=rand(10,23)+":"+String(rand(0,59)).padStart(2,"0");
+pnr.innerText = "PNR: "+pnr();
+gate.innerText = "A"+rand(1,30);
+terminal.innerText = rand(1,3);
+seat.innerText = seat();
+flight.innerText = rand(100,999);
+boarding.innerText = rand(10,23)+":"+String(rand(0,59)).padStart(2,"0");
 
-new QRCode(document.getElementById("qr"),{text:n+" "+c,width:150,height:150});
+new QRCode(document.getElementById("qr"),{
+text:n+" "+c,
+width:150,
+height:150
+});
 
 async function downloadPDF(){
     const { jsPDF } = window.jspdf;
@@ -153,4 +196,3 @@ async function downloadPDF(){
 
 </body>
 </html>
-
